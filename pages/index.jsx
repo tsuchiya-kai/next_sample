@@ -5,7 +5,7 @@ import utilStyles from "../styles/utils.module.css";
 // NOTE: 静的サイトジェネレータの場合のfetch方法
 import { getSortedPostsData } from "../lib/posts";
 
-export async function getStaticProps() {
+export async function getServerSideProps() {
   const allPostsData = getSortedPostsData();
   return {
     props: {
