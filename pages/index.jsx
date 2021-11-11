@@ -6,6 +6,7 @@ import Date from "/components/date";
 
 // NOTE: 静的サイトジェネレータの場合のfetch方法
 import { getSortedPostsData } from "../lib/posts";
+import { useEffect, useState } from "react";
 
 export async function getServerSideProps() {
   const allPostsData = getSortedPostsData();
@@ -17,6 +18,20 @@ export async function getServerSideProps() {
 }
 
 export default function Home({ allPostsData }) {
+  const [helloState, setHelloState] = useState();
+
+  useEffect(() => {
+    fetch(`http://localhost:3000/api/hello`)
+      .then((res) => res.json())
+      .then((data) => {
+        console.log({ data });
+        setHelloState(data);
+      })
+      .catch((e) => {
+        alert(`取得に失敗しました:${e}`);
+      });
+  }, []);
+
   return (
     <Layout home>
       <Head>
@@ -29,6 +44,7 @@ export default function Home({ allPostsData }) {
           <a href="https://nextjs.org/learn">our Next.js tutorial</a>.)
         </p>
       </section>
+      <h1>{helloState?.text ?? "読み込み中"}</h1>
       <section className={`${utilStyles.headingMd} ${utilStyles.padding1px}`}>
         <h2 className={utilStyles.headingLg}>Blog</h2>
         <ul className={utilStyles.list}>
